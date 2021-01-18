@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="执行监听器"
+      title="参数"
       :visible.sync="dialogVisible"
       width="900px"
       :close-on-click-modal="false"
@@ -36,7 +36,7 @@ export default {
       showParamDialog: false,
       nowIndex: null,
       formData: {
-        executionListener: []
+        inOut: []
       }
     }
   },
@@ -50,49 +50,20 @@ export default {
             xType: 'tabs',
             tabs: [
               {
-                label: '执行监听器',
-                name: 'executionListener',
+                label: '参数',
+                name: 'inOut',
                 column: [
                   {
-                    label: '事件',
-                    name: 'event',
-                    width: 180,
-                    rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }],
-                    xType: 'select',
-                    dic: [
-                      { label: 'start', value: 'start' },
-                      { label: 'end', value: 'end' },
-                      { label: 'take', value: 'take' }
-                    ]
-                  },
-                  {
-                    label: '类型',
-                    name: 'type',
-                    width: 180,
-                    rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }],
-                    xType: 'select',
-                    dic: [
-                      { label: '类', value: 'class' },
-                      { label: '表达式', value: 'expression' },
-                      { label: '委托表达式', value: 'delegateExpression' }
-                    ],
-                    tooltip: `类：示例 com.company.MyCustomListener，自定义类必须实现 org.flowable.engine.delegate.TaskListener 接口 <br />
-                              表达式：示例 \${myObject.callMethod(task, task.eventName)} <br />
-                              委托表达式：示例 \${myListenerSpringBean} ，该 springBean 需要实现 org.flowable.engine.delegate.TaskListener 接口
-                    `
-                  },
-                  {
-                    label: 'java 类名',
-                    name: 'className',
+                    label: 'source',
+                    name: 'source',
                     xType: 'input',
                     rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
                   },
                   {
-                    xType: 'slot',
-                    label: '参数',
-                    width: 120,
-                    slot: true,
-                    name: 'params'
+                    label: 'target',
+                    name: 'target',
+                    xType: 'input',
+                    rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
                   }
                 ]
               }
@@ -104,7 +75,7 @@ export default {
   },
   mounted() {
     this.formData.executionListener = this.element.businessObject.extensionElements?.values
-      .filter(item => item.$type === 'flowable:ExecutionListener')
+      .filter(item => item.$type === 'flowable:in')
       .map(item => {
         let type
         if ('class' in item) type = 'class'

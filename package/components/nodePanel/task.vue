@@ -16,6 +16,16 @@
           <el-button size="small" @click="dialogName = 'multiInstanceDialog'">编辑</el-button>
         </el-badge>
       </template>
+      <template #candidateUsers>
+        <el-badge :is-dot="hasCandidateUsers">
+          <el-button size="small" @click="dialogName = 'candidateUsersDialog'">编辑</el-button>
+        </el-badge>
+      </template>
+      <template #in>
+        <el-badge :is-dot="hasIn">
+          <el-button size="small" @click="dialogName = 'inDialog'">编辑</el-button>
+        </el-badge>
+      </template>
     </x-form>
     <executionListenerDialog
       v-if="dialogName === 'executionListenerDialog'"
@@ -35,6 +45,18 @@
       :modeler="modeler"
       @close="finishMultiInstance"
     />
+    <candidateUsersDialog
+      v-if="dialogName === 'candidateUsersDialog'"
+      :element="element"
+      :modeler="modeler"
+      @close="finishCandidateUsers"
+    />
+    <inOutDialog
+      v-if="dialogName === 'inDialog'"
+      :element="element"
+      :modeler="modeler"
+      @close="finishIn"
+    />
   </div>
 </template>
 
@@ -43,12 +65,16 @@ import mixinPanel from '../../common/mixinPanel'
 import executionListenerDialog from './property/executionListener'
 import taskListenerDialog from './property/taskListener'
 import multiInstanceDialog from './property/multiInstance'
+import candidateUsersDialog from './property/candidateUsers'
+import inOutDialog from './property/inOut'
 import { commonParse, userTaskParse } from '../../common/parseElement'
 export default {
   components: {
     executionListenerDialog,
     taskListenerDialog,
-    multiInstanceDialog
+    multiInstanceDialog,
+    candidateUsersDialog,
+    inOutDialog
   },
   mixins: [mixinPanel],
   props: {
@@ -64,9 +90,11 @@ export default {
   data() {
     return {
       userTypeOption: [
-        { label: '指定人员', value: 'assignee' },
-        { label: '候选人员', value: 'candidateUsers' },
-        { label: '候选组', value: 'candidateGroups' }
+        { label: '用户', value: 'candidateUsers' },
+        { label: '工作组', value: 'candidateGroups' },
+        { label: '角色', value: 'candidateRoles' },
+        { label: '部门', value: 'candidateDepts' },
+        { label: '人员脚本', value: 'assigneeExpression' }
       ],
       dialogName: '',
       executionListenerLength: 0,
@@ -85,17 +113,13 @@ export default {
             xType: 'input',
             name: 'id',
             label: '节点 id',
-            rules: [{ required: true, message: 'Id 不能为空' }]
+            rules: [{ required: true, message: ' ' }]
           },
           {
             xType: 'input',
             name: 'name',
-            label: '节点名称'
-          },
-          {
-            xType: 'colorPicker',
-            name: 'color',
-            label: '节点颜色'
+            label: '节点名称',
+            rules: [{ required: true, message: ' ' }]
           },
           {
             xType: 'input',
@@ -114,45 +138,21 @@ export default {
             show: !!_this.showConfig.taskListener
           },
           {
-            xType: 'select',
-            name: 'userType',
-            label: '人员类型',
-            dic: _this.userTypeOption,
-            show: !!_this.showConfig.userType
-          },
-          {
-            xType: 'select',
-            name: 'assignee',
-            label: '指定人员',
-            allowCreate: true,
-            filterable: true,
-            dic: { data: _this.users, label: 'name', value: 'id' },
-            show: !!_this.showConfig.assignee && _this.formData.userType === 'assignee'
-          },
-          {
-            xType: 'select',
+            xType: 'slot',
             name: 'candidateUsers',
-            label: '候选人员',
-            multiple: true,
-            allowCreate: true,
-            filterable: true,
-            dic: { data: _this.users, label: 'name', value: 'id' },
-            show: !!_this.showConfig.candidateUsers && _this.formData.userType === 'candidateUsers'
-          },
-          {
-            xType: 'select',
-            name: 'candidateGroups',
-            label: '候选组',
-            multiple: true,
-            allowCreate: true,
-            filterable: true,
-            dic: { data: _this.groups, label: 'name', value: 'id' },
-            show: !!_this.showConfig.candidateGroups && _this.formData.userType === 'candidateGroups'
+            label: '节点人员',
+            show: !!_this.showConfig.candidateUsers
           },
           {
             xType: 'slot',
             name: 'multiInstance',
             label: '多实例'
+          },
+          {
+            xType: 'slot',
+            name: 'in',
+            label: '输入参数',
+            show: !!_this.showConfig.inOutParameters
           },
           {
             xType: 'switch',
@@ -161,6 +161,24 @@ export default {
             activeText: '是',
             inactiveText: '否',
             show: !!_this.showConfig.async
+          },
+          {
+            xType: 'input',
+            name: 'calledElement',
+            label: '流程key',
+            show: !!_this.showConfig.calledElement
+          },
+          {
+            xType: 'input',
+            name: 'businessKey',
+            label: '业务key',
+            show: !!_this.showConfig.businessKey
+          },
+          {
+            xType: 'input',
+            name: 'processInstanceName',
+            label: '实例名称',
+            show: !!_this.showConfig.processInstanceName
           },
           {
             xType: 'input',
@@ -242,6 +260,30 @@ export default {
             name: 'dueDate',
             label: '到期时间',
             show: !!_this.showConfig.dueDate
+          },
+          {
+            xType: 'input',
+            name: 'pcUrl',
+            label: 'PC端URL',
+            show: !!_this.showConfig.pcUrl
+          },
+          {
+            xType: 'input',
+            name: 'pcInfoUrl',
+            label: 'PC端详情URL',
+            show: !!_this.showConfig.pcInfoUrl
+          },
+          {
+            xType: 'input',
+            name: 'mobileUrl',
+            label: '移动端URL',
+            show: !!_this.showConfig.mobileUrl
+          },
+          {
+            xType: 'input',
+            name: 'mobileInfoUrl',
+            label: '移动端详情URL',
+            show: !!_this.showConfig.mobileInfoUrl
           }
         ]
       }
@@ -280,7 +322,7 @@ export default {
     },
     'formData.async': function(val) {
       if (val === '') val = null
-      this.updateProperties({ 'flowable:async': true })
+      this.updateProperties({ 'flowable:async': val })
     },
     'formData.dueDate': function(val) {
       if (val === '') val = null
@@ -290,13 +332,37 @@ export default {
       if (val === '') val = null
       this.updateProperties({ 'flowable:formKey': val })
     },
+    'formData.calledElement': function(val) {
+      if (val) {
+        this.updateProperties({ 'flowable:calledElement': val })
+      } else {
+        delete this.element.businessObject.$attrs[`flowable:calledElement`]
+      }
+    },
+    'formData.businessKey': function(val) {
+      if (val) {
+        this.updateProperties({ 'flowable:businessKey': val })
+      } else {
+        delete this.element.businessObject.$attrs[`flowable:businessKey`]
+      }
+    },
+    'formData.processInstanceName': function(val) {
+      if (val) {
+        this.updateProperties({ 'flowable:processInstanceName': val })
+      } else {
+        delete this.element.businessObject.$attrs[`flowable:processInstanceName`]
+      }
+    },
     'formData.priority': function(val) {
       if (val === '') val = null
       this.updateProperties({ 'flowable:priority': val })
     },
     'formData.skipExpression': function(val) {
-      if (val === '') val = null
-      this.updateProperties({ 'flowable:skipExpression': val })
+      if (val) {
+        this.updateProperties({ 'flowable:skipExpression': val })
+      } else {
+        delete this.element.businessObject.$attrs[`flowable:skipExpression`]
+      }
     },
     'formData.isForCompensation': function(val) {
       if (val === '') val = null
@@ -329,7 +395,24 @@ export default {
     'formData.resultVariable': function(val) {
       if (val === '') val = null
       this.updateProperties({ 'flowable:resultVariable': val })
+    },
+    'formData.pcUrl': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:pcUrl': val })
+    },
+    'formData.mobileUrl': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:mobileUrl': val })
+    },
+    'formData.pcInfoUrl': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:pcInfoUrl': val })
+    },
+    'formData.mobileInfoUrl': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:mobileInfoUrl': val })
     }
+
   },
   created() {
     let cache = commonParse(this.element)
@@ -338,6 +421,7 @@ export default {
     this.computedExecutionListenerLength()
     this.computedTaskListenerLength()
     this.computedHasMultiInstance()
+    this.computedIn()
   },
   methods: {
     computedExecutionListenerLength() {
@@ -355,6 +439,10 @@ export default {
         this.hasMultiInstance = false
       }
     },
+    computedIn() {
+      this.taskListenerLength = this.element.businessObject.extensionElements?.values
+        ?.filter(item => item.$type === 'flowable:in').length ?? 0
+    },
     finishExecutionListener() {
       if (this.dialogName === 'executionListenerDialog') {
         this.computedExecutionListenerLength()
@@ -370,6 +458,18 @@ export default {
     finishMultiInstance() {
       if (this.dialogName === 'multiInstanceDialog') {
         this.computedHasMultiInstance()
+      }
+      this.dialogName = ''
+    },
+    finishCandidateUsers() {
+      if (this.dialogName === 'candidateUsersDialog') {
+        this.computedHasMultiInstance()
+      }
+      this.dialogName = ''
+    },
+    finishIn() {
+      if (this.dialogName === 'inDialog') {
+        this.computedIn()
       }
       this.dialogName = ''
     }

@@ -29,6 +29,7 @@
             </el-tooltip>
           </div>
           <div>
+            <el-button size="mini" icon="el-icon-tickets" @click="previewXML()">预览</el-button>
             <el-button size="mini" icon="el-icon-download" @click="saveXML(true)">下载xml</el-button>
             <el-button size="mini" icon="el-icon-picture" @click="saveImg('svg', true)">下载svg</el-button>
             <el-button size="mini" type="primary" @click="save">保存模型</el-button>
@@ -37,7 +38,22 @@
       </el-header>
       <el-container style="align-items: stretch">
         <el-main style="padding: 0;">
-          <div ref="canvas" class="canvas" />
+        <div ref="canvas" class="canvas" />
+        <el-dialog :visible.sync="xmlVisible" title="XML" :fullscreen="false" top="10vh">
+          <vue-ace-editor
+                          v-model="xmlEditor"
+                          @init="editorInit"
+                          lang="xml"
+                          theme="chrome"
+                          width="100%"
+                          height="500"
+                          :options="{wrap: true, readOnly: true}">
+          </vue-ace-editor>
+          <span slot="footer" class="dialog-footer">
+            <el-button icon="el-icon-document" v-clipboard:copy="xmlEditor" v-clipboard:success="onCopy">复 制</el-button>
+            <el-button icon="el-icon-close" type="primary" @click="xmlVisible = false">关闭</el-button>
+          </span>
+        </el-dialog>
         </el-main>
         <el-aside style="width: 400px; min-height: 650px; background-color: #f0f2f5">
           <panel v-if="modeler" :modeler="modeler" :users="users" :groups="groups" :categorys="categorys" />
@@ -57,10 +73,12 @@ import BpmData from './BpmData'
 import getInitStr from './flowable/init'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
+import VueAceEditor from 'vue2-ace-editor'
 export default {
   name: 'WorkflowBpmnModeler',
   components: {
-    panel
+    panel,
+    VueAceEditor
   },
   props: {
     xml: {
@@ -88,7 +106,9 @@ export default {
     return {
       modeler: null,
       taskList: [],
-      zoom: 1
+      zoom: 1,
+      xmlVisible: false,
+      xmlEditor: ''
     }
   },
   watch: {
@@ -129,7 +149,7 @@ export default {
       const currentViewbox = this.modeler.get('canvas').viewbox()
       const elementMid = {
         x: bbox.x + bbox.width / 2 - 65,
-        y: bbox.y + bbox.height / 2
+        y: bbox.y + bbox.height / 2 + 100
       }
       this.modeler.get('canvas').viewbox({
         x: elementMid.x - currentViewbox.width / 2,
@@ -321,6 +341,19 @@ export default {
       a.download = filename
       a.click()
       window.URL.revokeObjectURL(url)
+    },
+    editorInit: function() {
+      require('brace/ext/language_tools')
+      require('brace/mode/xml')
+      require('brace/theme/chrome')
+    },
+    onCopy() {
+      this.$message.success('内容复制成功')
+    },
+    async previewXML() {
+      this.xmlVisible = true
+      const { xml } = await this.modeler.saveXML({ format: true })
+      this.xmlEditor = xml
     }
   }
 }
@@ -369,9 +402,11 @@ export default {
     top: 0px;
     border-top: none;
   }
-
+  .bjs-powered-by {
+      display: none;
+  }
   .djs-container svg {
-    min-height: 650px;
+    min-height: 900px;
   }
 
   // .highlight.djs-shape .djs-visual > :nth-child(1) {

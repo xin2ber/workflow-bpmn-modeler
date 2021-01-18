@@ -14,7 +14,18 @@ export default {
     formKey: true,
     skipExpression: true,
     dueDate: true,
-    taskListener: true
+    taskListener: true,
+    pcUrl: true,
+    mobileUrl: true,
+    pcInfoUrl: true,
+    mobileInfoUrl: true
+  },
+  'bpmn:CallActivity': {
+    processInstanceName: true,
+    calledElement: true,
+    inOutParameters: true,
+    businessKey: true,
+    in: true
   },
   'bpmn:ServiceTask': {
     async: true,

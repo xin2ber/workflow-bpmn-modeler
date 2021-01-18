@@ -53,28 +53,25 @@ export default {
             xType: 'select',
             name: 'processCategory',
             label: '流程分类',
-            dic: { data: _this.categorys, label: 'name', value: 'id' }
+            dic: { data: _this.categorys, label: 'categoryName', value: 'categoryCode' },
+            rules: [{ required: true, message: ' ' }]
           },
           {
             xType: 'input',
             name: 'id',
             label: '流程标识key',
-            rules: [{ required: true, message: 'Id 不能为空' }]
+            rules: [{ required: true, message: ' ' }]
           },
           {
             xType: 'input',
             name: 'name',
-            label: '流程名称'
-          },
-          {
-            xType: 'colorPicker',
-            name: 'color',
-            label: '节点颜色'
+            label: '流程名称',
+            rules: [{ required: true, message: ' ' }]
           },
           {
             xType: 'input',
             name: 'documentation',
-            label: '节点描述'
+            label: '流程描述'
           },
           {
             xType: 'slot',
@@ -92,6 +89,7 @@ export default {
   },
   watch: {
     'formData.processCategory': function(val) {
+      console.log(val);
       if (val === '') val = null
       this.updateProperties({ 'flowable:processCategory': val })
     }

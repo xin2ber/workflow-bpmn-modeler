@@ -5,10 +5,10 @@ const fs = require('fs')
 const NODE_ENV = process.env.NODE_ENV
 let publicPath = '/'
 let outputDir = 'dist'
-let appFileName = 'Demo'
+let appFileName = 'Lib'
 if (NODE_ENV === 'demo') {
-  publicPath = '/workflow-bpmn-modeler/demo/'
-  outputDir = 'docs/demo'
+  publicPath = './'
+  outputDir = 'D:/workspace/xte/xte-demo/xte-fastdev-flowable/src/main/resources/static/flow/model'
   appFileName = 'Demo'
 }
 if (NODE_ENV === 'cdn') {
@@ -34,11 +34,13 @@ const mainFileStr = `
 import Vue from 'vue'
 import App from './${appFileName}.vue'
 import ElementUI from 'element-ui'
+import VueClipboard from 'vue-clipboard2'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+Vue.use(VueClipboard)
 
 new Vue({
   render: h => h(App)

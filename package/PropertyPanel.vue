@@ -71,9 +71,9 @@ export default {
         'bpmn:ManualTask',
         'bpmn:BusinessRuleTask',
         'bpmn:ServiceTask',
-        'bpmn:ScriptTask'
-        // 'bpmn:CallActivity',
-        // 'bpmn:SubProcess'
+        'bpmn:ScriptTask',
+        'bpmn:CallActivity',
+        'bpmn:SubProcess'
       ].includes(type)) {
         return 'taskPanel'
       }

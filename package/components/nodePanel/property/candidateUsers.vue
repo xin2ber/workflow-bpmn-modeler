@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="执行监听器"
+      title="节点人员"
       :visible.sync="dialogVisible"
       width="900px"
       :close-on-click-modal="false"
@@ -50,39 +50,26 @@ export default {
             xType: 'tabs',
             tabs: [
               {
-                label: '执行监听器',
+                label: '节点人员',
                 name: 'executionListener',
                 column: [
                   {
-                    label: '事件',
+                    label: '类型',
                     name: 'event',
                     width: 180,
                     rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }],
                     xType: 'select',
                     dic: [
-                      { label: 'start', value: 'start' },
-                      { label: 'end', value: 'end' },
-                      { label: 'take', value: 'take' }
+                      { label: '用户', value: 'user' },
+                      { label: '单位', value: 'company' },
+                      { label: '工作组', value: 'group' },
+                      { label: '角色', value: 'role' },
+                      { label: '脚本', value: 'expression' },
+                      { label: '操作符', value: 'operator' }
                     ]
                   },
                   {
-                    label: '类型',
-                    name: 'type',
-                    width: 180,
-                    rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }],
-                    xType: 'select',
-                    dic: [
-                      { label: '类', value: 'class' },
-                      { label: '表达式', value: 'expression' },
-                      { label: '委托表达式', value: 'delegateExpression' }
-                    ],
-                    tooltip: `类：示例 com.company.MyCustomListener，自定义类必须实现 org.flowable.engine.delegate.TaskListener 接口 <br />
-                              表达式：示例 \${myObject.callMethod(task, task.eventName)} <br />
-                              委托表达式：示例 \${myListenerSpringBean} ，该 springBean 需要实现 org.flowable.engine.delegate.TaskListener 接口
-                    `
-                  },
-                  {
-                    label: 'java 类名',
+                    label: '用户',
                     name: 'className',
                     xType: 'input',
                     rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
