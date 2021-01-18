@@ -89,7 +89,6 @@ export default {
   },
   watch: {
     'formData.processCategory': function(val) {
-      console.log(val);
       if (val === '') val = null
       this.updateProperties({ 'flowable:processCategory': val })
     }

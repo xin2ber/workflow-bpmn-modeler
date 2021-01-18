@@ -9,32 +9,21 @@
       :show-close="false"
       @closed="$emit('close')"
     >
-      <x-form ref="xForm" v-model="formData" :config="formConfig">
-        <template #params="scope">
-          <el-badge :value="scope.row.params ? scope.row.params.length : 0" type="primary">
-            <el-button size="small" @click="configParam(scope.$index)">配置</el-button>
-          </el-badge>
-        </template>
-      </x-form>
+      <x-form ref="xForm" v-model="formData" :config="formConfig" />
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="medium" @click="closeDialog">确 定</el-button>
       </span>
     </el-dialog>
-    <listenerParam v-if="showParamDialog" :value="formData.executionListener[nowIndex].params" @close="finishConfigParam" />
   </div>
 </template>
 
 <script>
 import mixinPanel from '../../../common/mixinPanel'
-import listenerParam from './listenerParam'
 export default {
-  components: { listenerParam },
   mixins: [mixinPanel],
   data() {
     return {
       dialogVisible: true,
-      showParamDialog: false,
-      nowIndex: null,
       formData: {
         inOut: []
       }
@@ -74,76 +63,44 @@ export default {
     }
   },
   mounted() {
-    this.formData.executionListener = this.element.businessObject.extensionElements?.values
+    this.formData.inOut = this.element.businessObject.extensionElements?.values
       .filter(item => item.$type === 'flowable:in')
       .map(item => {
-        let type
-        if ('class' in item) type = 'class'
-        if ('expression' in item) type = 'expression'
-        if ('delegateExpression' in item) type = 'delegateExpression'
         return {
-          event: item.event,
-          type: type,
-          className: item[type],
-          params: item.fields?.map(field => {
-            let fieldType
-            if ('stringValue' in field) fieldType = 'stringValue'
-            if ('expression' in field) fieldType = 'expression'
-            return {
-              name: field.name,
-              type: fieldType,
-              value: field[fieldType]
-            }
-          }) ?? []
+          source: item.source || item.sourceExpression,
+          target: item.target || item.targetExpression
         }
       }) ?? []
   },
   methods: {
-    configParam(index) {
-      this.nowIndex = index
-      const nowObj = this.formData.executionListener[index]
-      if (!nowObj.params) {
-        nowObj.params = []
-      }
-      this.showParamDialog = true
-    },
-    finishConfigParam(param) {
-      this.showParamDialog = false
-      const cache = this.formData.executionListener[this.nowIndex]
-      cache.params = param
-      this.$set(this.formData.executionListener[this.nowIndex], this.nowIndex, cache)
-      this.nowIndex = null
-    },
     updateElement() {
-      if (this.formData.executionListener?.length) {
+      if (this.formData.inOut?.length) {
         let extensionElements = this.element.businessObject.get('extensionElements')
         if (!extensionElements) {
           extensionElements = this.modeler.get('moddle').create('bpmn:ExtensionElements')
         }
         // 清除旧值
-        extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:ExecutionListener') ?? []
-        this.formData.executionListener.forEach(item => {
-          const executionListener = this.modeler.get('moddle').create('flowable:ExecutionListener')
-          executionListener['event'] = item.event
-          executionListener[item.type] = item.className
-          if (item.params && item.params.length) {
-            item.params.forEach(field => {
-              const fieldElement = this.modeler.get('moddle').create('flowable:Field')
-              fieldElement['name'] = field.name
-              fieldElement[field.type] = field.value
-              // 注意：flowable.json 中定义的string和expression类为小写，不然会和原生的String类冲突，此处为hack
-              // const valueElement = this.modeler.get('moddle').create(`flowable:${field.type}`, { body: field.value })
-              // fieldElement[field.type] = valueElement
-              executionListener.get('fields').push(fieldElement)
-            })
+        extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:in') ?? []
+        this.formData.inOut.forEach(item => {
+          const inOut = this.modeler.get('moddle').create('flowable:in')
+          if (/\$+\{+.+\}/.test(item.source)) {
+            inOut['sourceExpression'] = item.source
+          } else {
+            inOut['source'] = item.source
           }
-          extensionElements.get('values').push(executionListener)
+          if (/\$+\{+.+\}/.test(item.target)) {
+            inOut['targetExpression'] = item.target
+          } else {
+            inOut['target'] = item.target
+          }
+          extensionElements.get('values').push(inOut)
         })
+        console.log(extensionElements)
         this.updateProperties({ extensionElements: extensionElements })
       } else {
         const extensionElements = this.element.businessObject[`extensionElements`]
         if (extensionElements) {
-          extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:ExecutionListener') ?? []
+          extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:in') ?? []
         }
       }
     },

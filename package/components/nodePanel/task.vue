@@ -22,7 +22,7 @@
         </el-badge>
       </template>
       <template #in>
-        <el-badge :is-dot="hasIn">
+        <el-badge :value="inLength">
           <el-button size="small" @click="dialogName = 'inDialog'">编辑</el-button>
         </el-badge>
       </template>
@@ -100,6 +100,8 @@ export default {
       executionListenerLength: 0,
       taskListenerLength: 0,
       hasMultiInstance: false,
+      hasCandidateUsers: false,
+      inLength: 0,
       formData: {}
     }
   },
@@ -440,7 +442,7 @@ export default {
       }
     },
     computedIn() {
-      this.taskListenerLength = this.element.businessObject.extensionElements?.values
+      this.inLength = this.element.businessObject.extensionElements?.values
         ?.filter(item => item.$type === 'flowable:in').length ?? 0
     },
     finishExecutionListener() {

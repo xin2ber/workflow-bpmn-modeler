@@ -100,7 +100,17 @@
           "isAttr": true
         },
         {
+          "name": "sourceExpression",
+          "type": "string",
+          "isAttr": true
+        },
+        {
           "name": "target",
+          "type": "string",
+          "isAttr": true
+        },
+        {
+          "name": "targetExpression",
           "type": "string",
           "isAttr": true
         }

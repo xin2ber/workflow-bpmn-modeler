@@ -38,22 +38,22 @@
       </el-header>
       <el-container style="align-items: stretch">
         <el-main style="padding: 0;">
-        <div ref="canvas" class="canvas" />
-        <el-dialog :visible.sync="xmlVisible" title="XML" :fullscreen="false" top="10vh">
-          <vue-ace-editor
-                          v-model="xmlEditor"
-                          @init="editorInit"
-                          lang="xml"
-                          theme="chrome"
-                          width="100%"
-                          height="500"
-                          :options="{wrap: true, readOnly: true}">
-          </vue-ace-editor>
-          <span slot="footer" class="dialog-footer">
-            <el-button icon="el-icon-document" v-clipboard:copy="xmlEditor" v-clipboard:success="onCopy">复 制</el-button>
-            <el-button icon="el-icon-close" type="primary" @click="xmlVisible = false">关闭</el-button>
-          </span>
-        </el-dialog>
+          <div ref="canvas" class="canvas" />
+          <el-dialog :visible.sync="xmlVisible" title="XML" :fullscreen="false" top="10vh">
+            <vue-ace-editor
+              v-model="xmlEditor"
+              lang="xml"
+              theme="chrome"
+              width="100%"
+              height="500"
+              :options="{wrap: true, readOnly: true}"
+              @init="editorInit"
+            />
+            <span slot="footer" class="dialog-footer">
+              <el-button v-clipboard:copy="xmlEditor" v-clipboard:success="onCopy" icon="el-icon-document">复 制</el-button>
+              <el-button icon="el-icon-close" type="primary" @click="xmlVisible = false">关闭</el-button>
+            </span>
+          </el-dialog>
         </el-main>
         <el-aside style="width: 400px; min-height: 650px; background-color: #f0f2f5">
           <panel v-if="modeler" :modeler="modeler" :users="users" :groups="groups" :categorys="categorys" />
