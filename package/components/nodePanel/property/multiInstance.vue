@@ -17,7 +17,6 @@
         style="margin-bottom: 20px"
       >
         <template #title>
-          按照BPMN2.0规范的要求，用于为每个实例创建执行的父执行，会提供下列变量:<br>
           nrOfInstances：实例总数。<br>
           nrOfActiveInstances：当前活动的（即未完成的），实例数量。对于顺序多实例，这个值总为1。<br>
           nrOfCompletedInstances：已完成的实例数量。<br>
@@ -79,13 +78,18 @@ export default {
     }
   },
   mounted() {
-    const cache = JSON.parse(JSON.stringify(this.element.businessObject.loopCharacteristics ?? {}))
-    cache.completionCondition = cache.completionCondition?.body
-    this.formData = formatJsonKeyValue(cache)
+    console.log(this.element.businessObject.loopCharacteristics)
+    if (this.element.businessObject.loopCharacteristics) {
+      const cache = JSON.parse(JSON.stringify(this.element.businessObject.loopCharacteristics ?? {}))
+      cache.completionCondition = cache.completionCondition?.body
+      cache.isSequential = cache.isSequential ?? false
+      this.formData = formatJsonKeyValue(cache)
+    }
   },
   methods: {
     updateElement() {
-      if (this.formData.isSequential !== null || this.formData.isSequential !== undefined) {
+      console.log(this.formData)
+      if (this.formData.collection) {
         let loopCharacteristics = this.element.businessObject.get('loopCharacteristics')
         if (!loopCharacteristics) {
           loopCharacteristics = this.modeler.get('moddle').create('bpmn:MultiInstanceLoopCharacteristics')
@@ -100,6 +104,7 @@ export default {
         this.updateProperties({ loopCharacteristics: loopCharacteristics })
       } else {
         delete this.element.businessObject.loopCharacteristics
+        this.updateProperties({ loopCharacteristics: null })
       }
     },
     save() {

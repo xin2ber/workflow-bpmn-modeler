@@ -129,42 +129,6 @@ export default {
             label: '节点描述'
           },
           {
-            xType: 'slot',
-            name: 'executionListener',
-            label: '执行监听器'
-          },
-          {
-            xType: 'slot',
-            name: 'taskListener',
-            label: '任务监听器',
-            show: !!_this.showConfig.taskListener
-          },
-          {
-            xType: 'slot',
-            name: 'candidateUsers',
-            label: '节点人员',
-            show: !!_this.showConfig.candidateUsers
-          },
-          {
-            xType: 'slot',
-            name: 'multiInstance',
-            label: '多实例'
-          },
-          {
-            xType: 'slot',
-            name: 'in',
-            label: '输入参数',
-            show: !!_this.showConfig.inOutParameters
-          },
-          {
-            xType: 'switch',
-            name: 'async',
-            label: '异步',
-            activeText: '是',
-            inactiveText: '否',
-            show: !!_this.showConfig.async
-          },
-          {
             xType: 'input',
             name: 'calledElement',
             label: '流程key',
@@ -286,6 +250,42 @@ export default {
             name: 'mobileInfoUrl',
             label: '移动端详情URL',
             show: !!_this.showConfig.mobileInfoUrl
+          },
+          {
+            xType: 'switch',
+            name: 'async',
+            label: '异步',
+            activeText: '是',
+            inactiveText: '否',
+            show: !!_this.showConfig.async
+          },
+          {
+            xType: 'slot',
+            name: 'candidateUsers',
+            label: '节点人员',
+            show: !!_this.showConfig.candidateUsers
+          },
+          {
+            xType: 'slot',
+            name: 'multiInstance',
+            label: '多实例'
+          },
+          {
+            xType: 'slot',
+            name: 'in',
+            label: '输入参数',
+            show: !!_this.showConfig.inOutParameters
+          },
+          {
+            xType: 'slot',
+            name: 'executionListener',
+            label: '执行监听器'
+          },
+          {
+            xType: 'slot',
+            name: 'taskListener',
+            label: '任务监听器',
+            show: !!_this.showConfig.taskListener
           }
         ]
       }
@@ -439,11 +439,12 @@ export default {
         this.hasMultiInstance = true
       } else {
         this.hasMultiInstance = false
+        this.updateProperties({ loopCharacteristics: null })
       }
     },
     computedIn() {
       this.inLength = this.element.businessObject.extensionElements?.values
-        ?.filter(item => item.$type === 'flowable:in').length ?? 0
+        ?.filter(item => item.$type === 'flowable:In').length ?? 0
     },
     finishExecutionListener() {
       if (this.dialogName === 'executionListenerDialog') {

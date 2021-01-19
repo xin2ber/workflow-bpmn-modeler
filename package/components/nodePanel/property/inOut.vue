@@ -64,7 +64,7 @@ export default {
   },
   mounted() {
     this.formData.inOut = this.element.businessObject.extensionElements?.values
-      .filter(item => item.$type === 'flowable:in')
+      .filter(item => item.$type === 'flowable:In')
       .map(item => {
         return {
           source: item.source || item.sourceExpression,
@@ -80,9 +80,9 @@ export default {
           extensionElements = this.modeler.get('moddle').create('bpmn:ExtensionElements')
         }
         // 清除旧值
-        extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:in') ?? []
+        extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:In') ?? []
         this.formData.inOut.forEach(item => {
-          const inOut = this.modeler.get('moddle').create('flowable:in')
+          const inOut = this.modeler.get('moddle').create('flowable:In')
           if (/\$+\{+.+\}/.test(item.source)) {
             inOut['sourceExpression'] = item.source
           } else {
@@ -95,12 +95,11 @@ export default {
           }
           extensionElements.get('values').push(inOut)
         })
-        console.log(extensionElements)
         this.updateProperties({ extensionElements: extensionElements })
       } else {
         const extensionElements = this.element.businessObject[`extensionElements`]
         if (extensionElements) {
-          extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:in') ?? []
+          extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:In') ?? []
         }
       }
     },
