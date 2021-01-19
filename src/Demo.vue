@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import bpmnModeler from "../package/index";
+import bpmnModeler from '../package/index';
 export default {
   components: {
-    bpmnModeler,
+    bpmnModeler
   },
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
       }
     },
   },
-};
+}
 </script>
 
 <style lang="scss">

@@ -383,6 +383,12 @@
           "name": "processCategory",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "unpackVariable",
+          "default": false,
+          "isAttr": true,
+          "type": "Boolean"
         }
       ]
     },

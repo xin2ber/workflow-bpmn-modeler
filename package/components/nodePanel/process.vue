@@ -74,6 +74,13 @@ export default {
             label: '流程描述'
           },
           {
+            xType: 'switch',
+            name: 'unpackVariable',
+            label: '参数转换',
+            activeText: '是',
+            inactiveText: '否'
+          },
+          {
             xType: 'slot',
             name: 'executionListener',
             label: '执行监听器'
@@ -91,6 +98,10 @@ export default {
     'formData.processCategory': function(val) {
       if (val === '') val = null
       this.updateProperties({ 'flowable:processCategory': val })
+    },
+    'formData.unpackVariable': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:unpackVariable': val })
     }
   },
   created() {
