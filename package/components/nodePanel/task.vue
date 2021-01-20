@@ -336,9 +336,9 @@ export default {
     },
     'formData.calledElement': function(val) {
       if (val) {
-        this.updateProperties({ 'flowable:calledElement': val })
+        this.updateProperties({ 'calledElement': val })
       } else {
-        delete this.element.businessObject.$attrs[`flowable:calledElement`]
+        delete this.element.businessObject.$attrs[`calledElement`]
       }
     },
     'formData.businessKey': function(val) {
