@@ -223,5 +223,7 @@ export const NodeName = {
   'bpmn:ParallelGateway': '并行网关',
   'bpmn:InclusiveGateway': '相容网关',
   'bpmn:ComplexGateway': '复杂网关',
-  'bpmn:EventBasedGateway': '事件网关'
+  'bpmn:EventBasedGateway': '事件网关',
+  'bpmn:CallActivity': '调用活动',
+  'bpmn:SubProcess': '子流程'
 }

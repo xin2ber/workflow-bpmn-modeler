@@ -50,6 +50,10 @@ export default {
             xType: 'tabs',
             tabs: [
               {
+                add: function(arr) {
+                  console.log(arr)
+                  arr.splice(arr.length, 0, {})
+                },
                 label: '节点人员',
                 name: 'executionListener',
                 column: [
