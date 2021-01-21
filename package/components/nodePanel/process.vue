@@ -76,7 +76,7 @@ export default {
           {
             xType: 'switch',
             name: 'unpackVariable',
-            label: '参数转换',
+            label: '父流程参数转换',
             activeText: '是',
             inactiveText: '否'
           },
