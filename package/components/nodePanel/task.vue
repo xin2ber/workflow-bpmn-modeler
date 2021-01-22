@@ -17,7 +17,7 @@
         </el-badge>
       </template>
       <template #candidateUsers>
-        <el-badge :is-dot="hasCandidateUsers">
+        <el-badge :value="candidatesLength">
           <el-button size="small" @click="dialogName = 'candidateUsersDialog'">编辑</el-button>
         </el-badge>
       </template>
@@ -102,6 +102,7 @@ export default {
       hasMultiInstance: false,
       hasCandidateUsers: false,
       inLength: 0,
+      candidatesLength: 0,
       formData: {}
     }
   },
@@ -424,6 +425,7 @@ export default {
     this.computedTaskListenerLength()
     this.computedHasMultiInstance()
     this.computedIn()
+    this.computedCandidates()
   },
   methods: {
     computedExecutionListenerLength() {
@@ -446,6 +448,10 @@ export default {
       this.inLength = this.element.businessObject.extensionElements?.values
         ?.filter(item => item.$type === 'flowable:In').length ?? 0
     },
+    computedCandidates() {
+      const candidates = this.element.businessObject.extensionElements?.values.filter(item => item.$type === 'flowable:Candidates')[0]
+      this.candidatesLength = candidates?.get('candidates').length ?? 0
+    },
     finishExecutionListener() {
       if (this.dialogName === 'executionListenerDialog') {
         this.computedExecutionListenerLength()
@@ -466,7 +472,7 @@ export default {
     },
     finishCandidateUsers() {
       if (this.dialogName === 'candidateUsersDialog') {
-        this.computedHasMultiInstance()
+        this.computedCandidates()
       }
       this.dialogName = ''
     },

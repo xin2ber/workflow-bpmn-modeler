@@ -10,17 +10,11 @@
       @closed="$emit('close')"
     >
       <x-form ref="xForm" v-model="formData" :config="formConfig">
-        <template #params="scope">
-          <el-badge :value="scope.row.params ? scope.row.params.length : 0" type="primary">
-            <el-button size="small" @click="configParam(scope.$index)">配置</el-button>
-          </el-badge>
-        </template>
       </x-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="medium" @click="closeDialog">确 定</el-button>
       </span>
     </el-dialog>
-    <listenerParam v-if="showParamDialog" :value="formData.executionListener[nowIndex].params" @close="finishConfigParam" />
   </div>
 </template>
 
@@ -36,7 +30,7 @@ export default {
       showParamDialog: false,
       nowIndex: null,
       formData: {
-        executionListener: []
+        candidates: []
       }
     }
   },
@@ -55,11 +49,11 @@ export default {
                   arr.splice(arr.length, 0, {})
                 },
                 label: '节点人员',
-                name: 'executionListener',
+                name: 'candidates',
                 column: [
                   {
                     label: '类型',
-                    name: 'event',
+                    name: 'type',
                     width: 180,
                     rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }],
                     xType: 'select',
@@ -67,24 +61,18 @@ export default {
                       { label: '用户', value: 'user' },
                       { label: '单位', value: 'company' },
                       { label: '工作组', value: 'group' },
+                      { label: '作业区', value: 'workArea' },
                       { label: '角色', value: 'role' },
                       { label: '脚本', value: 'expression' },
                       { label: '操作符', value: 'operator' }
                     ]
                   },
                   {
-                    label: '用户',
-                    name: 'className',
+                    label: '值',
+                    name: 'value',
                     xType: 'input',
                     rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
                   },
-                  {
-                    xType: 'slot',
-                    label: '参数',
-                    width: 120,
-                    slot: true,
-                    name: 'params'
-                  }
                 ]
               }
             ]
@@ -94,28 +82,13 @@ export default {
     }
   },
   mounted() {
-    this.formData.executionListener = this.element.businessObject.extensionElements?.values
-      .filter(item => item.$type === 'flowable:ExecutionListener')
-      .map(item => {
-        let type
-        if ('class' in item) type = 'class'
-        if ('expression' in item) type = 'expression'
-        if ('delegateExpression' in item) type = 'delegateExpression'
-        return {
-          event: item.event,
-          type: type,
-          className: item[type],
-          params: item.fields?.map(field => {
-            let fieldType
-            if ('stringValue' in field) fieldType = 'stringValue'
-            if ('expression' in field) fieldType = 'expression'
-            return {
-              name: field.name,
-              type: fieldType,
-              value: field[fieldType]
-            }
-          }) ?? []
-        }
+    const candidates = this.element.businessObject.extensionElements?.values.filter(item => item.$type === 'flowable:Candidates')[0]
+    console.log(candidates)
+    this.formData.candidates = candidates?.get('candidates')?.map(item => {
+         return {
+          type: item.type,
+          value: item.value
+         }
       }) ?? []
   },
   methods: {
@@ -135,35 +108,27 @@ export default {
       this.nowIndex = null
     },
     updateElement() {
-      if (this.formData.executionListener?.length) {
+      if (this.formData.candidates?.length) {
         let extensionElements = this.element.businessObject.get('extensionElements')
         if (!extensionElements) {
           extensionElements = this.modeler.get('moddle').create('bpmn:ExtensionElements')
         }
         // 清除旧值
-        extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:ExecutionListener') ?? []
-        this.formData.executionListener.forEach(item => {
-          const executionListener = this.modeler.get('moddle').create('flowable:ExecutionListener')
-          executionListener['event'] = item.event
-          executionListener[item.type] = item.className
-          if (item.params && item.params.length) {
-            item.params.forEach(field => {
-              const fieldElement = this.modeler.get('moddle').create('flowable:Field')
-              fieldElement['name'] = field.name
-              fieldElement[field.type] = field.value
-              // 注意：flowable.json 中定义的string和expression类为小写，不然会和原生的String类冲突，此处为hack
-              // const valueElement = this.modeler.get('moddle').create(`flowable:${field.type}`, { body: field.value })
-              // fieldElement[field.type] = valueElement
-              executionListener.get('fields').push(fieldElement)
-            })
-          }
-          extensionElements.get('values').push(executionListener)
+        extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:Candidates') ?? []
+        let candidates = this.modeler.get('moddle').create('flowable:Candidates')
+        this.formData.candidates.forEach(item => {
+          let candidate = this.modeler.get('moddle').create('flowable:Candidate')
+          candidate['type'] = item.type
+          candidate['value'] = item.value
+          candidates.get('candidates').push(candidate)
         })
+        extensionElements.get('values').push(candidates)
+        console.log(extensionElements)
         this.updateProperties({ extensionElements: extensionElements })
       } else {
         const extensionElements = this.element.businessObject[`extensionElements`]
         if (extensionElements) {
-          extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:ExecutionListener') ?? []
+          extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:Candidates') ?? []
         }
       }
     },
