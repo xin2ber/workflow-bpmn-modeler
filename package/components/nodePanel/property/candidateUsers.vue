@@ -10,6 +10,13 @@
       @closed="$emit('close')"
     >
       <x-form ref="xForm" v-model="formData" :config="formConfig">
+        <template #params="scope">
+          <el-select v-if="scope.row.type == 'operator'" v-model="scope.row.params" class="select" placeholder="请选择" filterable allow-create>
+            <el-option v-for="item in operatorList " :key="item.id" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+          <el-input v-else v-model="scope.row.params" placeholder="请输入"></el-input>
+        </template>
       </x-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="medium" @click="ok">确 定</el-button>
@@ -30,12 +37,18 @@ export default {
       nowIndex: null,
       formData: {
         candidates: []
-      }
+      },
+      operatorList: [
+        { label: '交', value: '∩' },
+        { label: '并', value: '∪' },
+        { label: '差', value: '-' },
+        { label: '(', value: '(' },
+        { label: ')', value: ')' }
+      ]
     }
   },
   computed: {
     formConfig() {
-    //   const _this = this
       return {
         inline: false,
         item: [
@@ -43,10 +56,6 @@ export default {
             xType: 'tabs',
             tabs: [
               {
-                add: function(arr) {
-                  console.log(arr)
-                  arr.splice(arr.length, 0, {})
-                },
                 label: '节点人员',
                 name: 'candidates',
                 column: [
@@ -67,10 +76,10 @@ export default {
                     ]
                   },
                   {
-                    label: '值',
-                    name: 'value',
-                    xType: 'input',
-                    rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
+                    xType: 'slot',
+                    label: '参数',
+                    slot: true,
+                    name: 'params'
                   }
                 ]
               }
@@ -82,11 +91,10 @@ export default {
   },
   mounted() {
     const candidates = this.element.businessObject.extensionElements?.values.filter(item => item.$type === 'flowable:Candidates')[0]
-    console.log(candidates)
     this.formData.candidates = candidates?.get('candidates')?.map(item => {
       return {
         type: item.type,
-        value: item.value
+        params: item.value
       }
     }) ?? []
   },
@@ -118,7 +126,7 @@ export default {
         this.formData.candidates.forEach(item => {
           const candidate = this.modeler.get('moddle').create('flowable:Candidate')
           candidate['type'] = item.type
-          candidate['value'] = item.value
+          candidate['value'] = item.params
           candidates.get('candidates').push(candidate)
         })
         extensionElements.get('values').push(candidates)
@@ -147,5 +155,8 @@ export default {
 <style>
 .flow-containers  .el-badge__content.is-fixed {
     top: 18px;
+}
+.select {
+  width: 100%;
 }
 </style>
