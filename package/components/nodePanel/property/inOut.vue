@@ -11,7 +11,8 @@
     >
       <x-form ref="xForm" v-model="formData" :config="formConfig" />
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="medium" @click="closeDialog">确 定</el-button>
+        <el-button type="primary" size="medium" @click="ok">确 定</el-button>
+        <el-button plain size="medium" @click="closeDialog">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -103,11 +104,14 @@ export default {
         }
       }
     },
-    closeDialog() {
+    ok() {
       this.$refs.xForm.validate().then(() => {
         this.updateElement()
         this.dialogVisible = false
       }).catch(e => console.error(e))
+    },
+    closeDialog() {
+      this.dialogVisible = false
     }
   }
 }

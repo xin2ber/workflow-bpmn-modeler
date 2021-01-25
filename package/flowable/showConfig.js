@@ -21,10 +21,10 @@ export default {
     mobileInfoUrl: true
   },
   'bpmn:CallActivity': {
-    processInstanceName: true, 
+    processInstanceName: true,
     calledElement: true,
     inOutParameters: true,
-    businessKey: true,
+    businessKey: true
   },
   'bpmn:ServiceTask': {
     async: true,

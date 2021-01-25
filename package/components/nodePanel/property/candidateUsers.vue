@@ -12,7 +12,8 @@
       <x-form ref="xForm" v-model="formData" :config="formConfig">
       </x-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="medium" @click="closeDialog">确 定</el-button>
+        <el-button type="primary" size="medium" @click="ok">确 定</el-button>
+        <el-button plain size="medium" @click="closeDialog">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -20,9 +21,7 @@
 
 <script>
 import mixinPanel from '../../../common/mixinPanel'
-import listenerParam from './listenerParam'
 export default {
-  components: { listenerParam },
   mixins: [mixinPanel],
   data() {
     return {
@@ -72,7 +71,7 @@ export default {
                     name: 'value',
                     xType: 'input',
                     rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
-                  },
+                  }
                 ]
               }
             ]
@@ -85,11 +84,11 @@ export default {
     const candidates = this.element.businessObject.extensionElements?.values.filter(item => item.$type === 'flowable:Candidates')[0]
     console.log(candidates)
     this.formData.candidates = candidates?.get('candidates')?.map(item => {
-         return {
-          type: item.type,
-          value: item.value
-         }
-      }) ?? []
+      return {
+        type: item.type,
+        value: item.value
+      }
+    }) ?? []
   },
   methods: {
     configParam(index) {
@@ -115,9 +114,9 @@ export default {
         }
         // 清除旧值
         extensionElements.values = extensionElements.values?.filter(item => item.$type !== 'flowable:Candidates') ?? []
-        let candidates = this.modeler.get('moddle').create('flowable:Candidates')
+        const candidates = this.modeler.get('moddle').create('flowable:Candidates')
         this.formData.candidates.forEach(item => {
-          let candidate = this.modeler.get('moddle').create('flowable:Candidate')
+          const candidate = this.modeler.get('moddle').create('flowable:Candidate')
           candidate['type'] = item.type
           candidate['value'] = item.value
           candidates.get('candidates').push(candidate)
@@ -132,11 +131,14 @@ export default {
         }
       }
     },
-    closeDialog() {
+    ok() {
       this.$refs.xForm.validate().then(() => {
         this.updateElement()
         this.dialogVisible = false
       }).catch(e => console.error(e))
+    },
+    closeDialog() {
+      this.dialogVisible = false
     }
   }
 }

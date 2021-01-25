@@ -72,13 +72,13 @@ export default {
         ],
         operate: [
           { text: '确定', show: true, click: _this.save },
-          { text: '清空', show: true, click: () => { _this.formData = {} } }
+          { text: '清空', show: true, click: () => { _this.formData = {} } },
+          { text: '取消', show: true, click: _this.closeDialog }
         ]
       }
     }
   },
   mounted() {
-    console.log(this.element.businessObject.loopCharacteristics)
     if (this.element.businessObject.loopCharacteristics) {
       const cache = JSON.parse(JSON.stringify(this.element.businessObject.loopCharacteristics ?? {}))
       cache.completionCondition = cache.completionCondition?.body
@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     updateElement() {
-      console.log(this.formData)
       if (this.formData.collection) {
         let loopCharacteristics = this.element.businessObject.get('loopCharacteristics')
         if (!loopCharacteristics) {
@@ -104,11 +103,13 @@ export default {
         this.updateProperties({ loopCharacteristics: loopCharacteristics })
       } else {
         delete this.element.businessObject.loopCharacteristics
-        this.updateProperties({ loopCharacteristics: null })
       }
     },
     save() {
       this.updateElement()
+      this.dialogVisible = false
+    },
+    closeDialog() {
       this.dialogVisible = false
     }
   }
