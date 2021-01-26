@@ -74,6 +74,16 @@ export default {
             label: '流程描述'
           },
           {
+            xType: 'input',
+            name: 'pcUrl',
+            label: 'PC端URL'
+          },
+          {
+            xType: 'input',
+            name: 'mobileUrl',
+            label: '移动端URL'
+          },
+          {
             xType: 'switch',
             name: 'unpackVariable',
             label: '父流程参数转换',
@@ -102,6 +112,14 @@ export default {
     'formData.unpackVariable': function(val) {
       if (val === '') val = null
       this.updateProperties({ 'flowable:unpackVariable': val })
+    },
+    'formData.pcUrl': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:pcUrl': val })
+    },
+    'formData.mobileUrl': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:mobileUrl': val })
     }
   },
   created() {

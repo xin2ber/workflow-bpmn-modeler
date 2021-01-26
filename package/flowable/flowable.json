@@ -389,6 +389,16 @@
           "default": false,
           "isAttr": true,
           "type": "Boolean"
+        },
+        {
+          "name": "pcUrl",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "mobileUrl",
+          "isAttr": true,
+          "type": "String"
         }
       ]
     },

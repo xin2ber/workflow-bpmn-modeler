@@ -10,9 +10,15 @@
       @closed="$emit('close')"
     >
       <x-form ref="xForm" v-model="formData" :config="formConfig">
+        <template #type="scope">
+          <el-select v-model="scope.row.type" class="select" placeholder="请选择">
+            <el-option v-for="item in typeList " :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </template>
         <template #params="scope">
           <el-select v-if="scope.row.type == 'operator'" v-model="scope.row.params" class="select" placeholder="请选择" filterable allow-create>
-            <el-option v-for="item in operatorList " :key="item.id" :label="item.label" :value="item.value">
+            <el-option v-for="item in operatorList " :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
           <el-input v-else v-model="scope.row.params" placeholder="请输入"></el-input>
@@ -38,12 +44,21 @@ export default {
       formData: {
         candidates: []
       },
+      typeList: [
+        { label: '用户', value: 'user' },
+        { label: '单位', value: 'company' },
+        { label: '工作组', value: 'group' },
+        { label: '作业区', value: 'workArea' },
+        { label: '角色', value: 'role' },
+        { label: '脚本', value: 'expression' },
+        { label: '操作符', value: 'operator' }
+      ],
       operatorList: [
-        { label: '交', value: '∩' },
-        { label: '并', value: '∪' },
-        { label: '差', value: '-' },
-        { label: '(', value: '(' },
-        { label: ')', value: ')' }
+        { label: '交集', value: '∩' },
+        { label: '并集', value: '∪' },
+        { label: '差集', value: '-' },
+        { label: '左括号', value: '(' },
+        { label: '右括号', value: ')' }
       ]
     }
   },
@@ -60,26 +75,19 @@ export default {
                 name: 'candidates',
                 column: [
                   {
+                    xType: 'slot',
                     label: '类型',
+                    slot: true,
                     name: 'type',
                     width: 180,
-                    rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }],
-                    xType: 'select',
-                    dic: [
-                      { label: '用户', value: 'user' },
-                      { label: '单位', value: 'company' },
-                      { label: '工作组', value: 'group' },
-                      { label: '作业区', value: 'workArea' },
-                      { label: '角色', value: 'role' },
-                      { label: '脚本', value: 'expression' },
-                      { label: '操作符', value: 'operator' }
-                    ]
+                    rules: [{ required: true, message: '请选择', trigger: ['blur', 'change'] }]
                   },
                   {
                     xType: 'slot',
-                    label: '参数',
+                    label: '值',
                     slot: true,
-                    name: 'params'
+                    name: 'params',
+                    rules: [{ required: true, message: '请输入', trigger: ['blur', 'change'] }]
                   }
                 ]
               }
@@ -130,7 +138,6 @@ export default {
           candidates.get('candidates').push(candidate)
         })
         extensionElements.get('values').push(candidates)
-        console.log(extensionElements)
         this.updateProperties({ extensionElements: extensionElements })
       } else {
         const extensionElements = this.element.businessObject[`extensionElements`]
