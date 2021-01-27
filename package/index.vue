@@ -50,8 +50,8 @@
               @init="editorInit"
             />
             <span slot="footer" class="dialog-footer">
-              <el-button v-clipboard:copy="xmlEditor" v-clipboard:success="onCopy" icon="el-icon-document">复 制</el-button>
-              <el-button icon="el-icon-close" type="primary" @click="xmlVisible = false">关闭</el-button>
+              <el-button v-clipboard:copy="xmlEditor" v-clipboard:success="onCopy" icon="el-icon-document" type="primary">复 制</el-button>
+              <el-button icon="el-icon-close" @click="xmlVisible = false">关闭</el-button>
             </span>
           </el-dialog>
         </el-main>
