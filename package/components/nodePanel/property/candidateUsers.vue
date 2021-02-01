@@ -12,16 +12,14 @@
       <x-form ref="xForm" v-model="formData" :config="formConfig">
         <template #type="scope">
           <el-select v-model="scope.row.type" class="select" placeholder="请选择">
-            <el-option v-for="item in typeList " :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
+            <el-option v-for="item in typeList " :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </template>
         <template #params="scope">
           <el-select v-if="scope.row.type == 'operator'" v-model="scope.row.params" class="select" placeholder="请选择" filterable allow-create>
-            <el-option v-for="item in operatorList " :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
+            <el-option v-for="item in operatorList " :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
-          <el-input v-else v-model="scope.row.params" placeholder="请输入"></el-input>
+          <el-input v-else v-model="scope.row.params" placeholder="请输入" />
         </template>
       </x-form>
       <span slot="footer" class="dialog-footer">
@@ -98,13 +96,13 @@ export default {
     }
   },
   mounted() {
-    const candidates = this.element.businessObject.extensionElements?.values.filter(item => item.$type === 'flowable:Candidates')[0]
-    this.formData.candidates = candidates?.get('candidates')?.map(item => {
-      return {
-        type: item.type,
-        params: item.value
-      }
-    }) ?? []
+    this.formData.candidates = this.element.businessObject.extensionElements?.values?.filter(item => item.$type === 'flowable:Candidates')[0]?.get('candidates')
+      ?.map(item => {
+        return {
+          type: item.type,
+          params: item.value
+        }
+      }) ?? []
   },
   methods: {
     configParam(index) {

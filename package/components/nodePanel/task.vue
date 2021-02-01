@@ -449,8 +449,7 @@ export default {
         ?.filter(item => item.$type === 'flowable:In').length ?? 0
     },
     computedCandidates() {
-      const candidates = this.element.businessObject.extensionElements?.values.filter(item => item.$type === 'flowable:Candidates')[0]
-      this.candidatesLength = candidates?.get('candidates').length ?? 0
+      this.candidatesLength = this.element.businessObject.extensionElements?.values?.filter(item => item.$type === 'flowable:Candidates')[0]?.get('candidates').length ?? 0
     },
     finishExecutionListener() {
       if (this.dialogName === 'executionListenerDialog') {

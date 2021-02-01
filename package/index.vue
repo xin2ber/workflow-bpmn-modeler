@@ -15,7 +15,7 @@
             <el-tooltip effect="dark" content="自适应屏幕" placement="bottom">
               <el-button size="mini" icon="el-icon-rank" @click="fitViewport" />
             </el-tooltip>
-            <el-tooltip effect="dark" content="放大" placement="bottom">
+            <el-tooltip effect="dark" content="放大" placement="bottom">g
               <el-button size="mini" icon="el-icon-zoom-in" @click="zoomViewport(true)" />
             </el-tooltip>
             <el-tooltip effect="dark" content="缩小" placement="bottom">
@@ -149,7 +149,7 @@ export default {
       const currentViewbox = this.modeler.get('canvas').viewbox()
       const elementMid = {
         x: bbox.x + bbox.width / 2 - 65,
-        y: bbox.y + bbox.height / 2 + 100
+        y: bbox.y + bbox.height / 2 + 80
       }
       this.modeler.get('canvas').viewbox({
         x: elementMid.x - currentViewbox.width / 2,
