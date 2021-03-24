@@ -35,13 +35,14 @@
     "url": "https://github.com/GoldSubmarine/workflow-bpmn-modeler/issues"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bpmn-js": "^8.1.0",
     "element-ui": "^2.12.0",
     "vue": "^2.6.10",
-    "workflow-bpmn-modeler": "^0.2.7",
-    "xcrud": "0.4.2",
     "vue-clipboard2": "^0.3.1",
-    "vue2-ace-editor": "0.0.15"
+    "vue2-ace-editor": "0.0.15",
+    "workflow-bpmn-modeler": "^0.2.7",
+    "xcrud": "0.4.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.6",

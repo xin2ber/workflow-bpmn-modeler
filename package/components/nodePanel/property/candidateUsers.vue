@@ -32,6 +32,7 @@
 
 <script>
 import mixinPanel from '../../../common/mixinPanel'
+import { getCandidatesTypeList } from '../../../common/api'
 export default {
   mixins: [mixinPanel],
   data() {
@@ -44,10 +45,6 @@ export default {
       },
       typeList: [
         { label: '用户', value: 'user' },
-        { label: '单位', value: 'company' },
-        { label: '工作组', value: 'group' },
-        { label: '作业区', value: 'workArea' },
-        { label: '角色', value: 'role' },
         { label: '脚本', value: 'expression' },
         { label: '操作符', value: 'operator' }
       ],
@@ -96,6 +93,9 @@ export default {
     }
   },
   mounted() {
+    getCandidatesTypeList().then(resp => {
+      this.typeList = resp.data.concat(this.typeList)
+    })
     this.formData.candidates = this.element.businessObject.extensionElements?.values?.filter(item => item.$type === 'flowable:Candidates')[0]?.get('candidates')
       ?.map(item => {
         return {

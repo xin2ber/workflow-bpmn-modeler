@@ -25,7 +25,7 @@ export default {
       users: [],
       groups: [],
       categorys: [],
-      isView: false,
+      isView: false
     };
   },
   mounted() {
@@ -33,7 +33,7 @@ export default {
       if (!event.data.isSave) {
         this.set(event.data);
       }
-    });
+    })
   },
   methods: {
     saveModeler(data) {
@@ -55,8 +55,8 @@ export default {
       if (eventData.isView) {
         this.isView = eventData.isView;
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -89,13 +89,6 @@ export default {
   },
   data() {
     return {
-      userTypeOption: [
-        { label: '用户', value: 'candidateUsers' },
-        { label: '工作组', value: 'candidateGroups' },
-        { label: '角色', value: 'candidateRoles' },
-        { label: '部门', value: 'candidateDepts' },
-        { label: '人员脚本', value: 'assigneeExpression' }
-      ],
       dialogName: '',
       executionListenerLength: 0,
       taskListenerLength: 0,
@@ -253,14 +246,6 @@ export default {
             show: !!_this.showConfig.mobileInfoUrl
           },
           {
-            xType: 'switch',
-            name: 'async',
-            label: '异步',
-            activeText: '是',
-            inactiveText: '否',
-            show: !!_this.showConfig.async
-          },
-          {
             xType: 'slot',
             name: 'candidateUsers',
             label: '节点人员',
@@ -276,53 +261,12 @@ export default {
             name: 'in',
             label: '输入参数',
             show: !!_this.showConfig.inOutParameters
-          },
-          {
-            xType: 'slot',
-            name: 'executionListener',
-            label: '执行监听器'
-          },
-          {
-            xType: 'slot',
-            name: 'taskListener',
-            label: '任务监听器',
-            show: !!_this.showConfig.taskListener
           }
         ]
       }
     }
   },
   watch: {
-    'formData.userType': function(val, oldVal) {
-      if (oldVal) {
-        const types = ['assignee', 'candidateUsers', 'candidateGroups']
-        types.forEach(type => {
-          delete this.element.businessObject.$attrs[`flowable:${type}`]
-          delete this.formData[type]
-        })
-      }
-    },
-    'formData.assignee': function(val) {
-      if (this.formData.userType !== 'assignee') {
-        delete this.element.businessObject.$attrs[`flowable:assignee`]
-        return
-      }
-      this.updateProperties({ 'flowable:assignee': val })
-    },
-    'formData.candidateUsers': function(val) {
-      if (this.formData.userType !== 'candidateUsers') {
-        delete this.element.businessObject.$attrs[`flowable:candidateUsers`]
-        return
-      }
-      this.updateProperties({ 'flowable:candidateUsers': val?.join(',') })
-    },
-    'formData.candidateGroups': function(val) {
-      if (this.formData.userType !== 'candidateGroups') {
-        delete this.element.businessObject.$attrs[`flowable:candidateGroups`]
-        return
-      }
-      this.updateProperties({ 'flowable:candidateGroups': val?.join(',') })
-    },
     'formData.async': function(val) {
       if (val === '') val = null
       this.updateProperties({ 'flowable:async': val })
