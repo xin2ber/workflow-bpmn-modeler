@@ -276,6 +276,11 @@
           "name": "mobileInfoUrl",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "completeAutoExpression",
+          "isAttr": true,
+          "type": "String"
         }
       ]
     },

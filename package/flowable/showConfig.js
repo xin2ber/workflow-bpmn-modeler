@@ -13,6 +13,7 @@ export default {
     priority: true,
     formKey: true,
     skipExpression: true,
+    completeAutoExpression: true,
     dueDate: true,
     taskListener: true,
     pcUrl: true,

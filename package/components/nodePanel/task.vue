@@ -159,6 +159,12 @@ export default {
             show: !!_this.showConfig.skipExpression
           },
           {
+            xType: 'input',
+            name: 'completeAutoExpression',
+            label: '自动完成表达式',
+            show: !!_this.showConfig.completeAutoExpression
+          },
+          {
             xType: 'switch',
             name: 'isForCompensation',
             label: '是否为补偿',
@@ -310,6 +316,10 @@ export default {
       } else {
         delete this.element.businessObject.$attrs[`flowable:skipExpression`]
       }
+    },
+    'formData.completeAutoExpression': function(val) {
+      if (val === '') val = null
+      this.updateProperties({ 'flowable:completeAutoExpression': val })
     },
     'formData.isForCompensation': function(val) {
       if (val === '') val = null
