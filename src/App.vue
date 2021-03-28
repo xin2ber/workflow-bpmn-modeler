@@ -13,47 +13,47 @@
 </template>
 
 <script>
-import bpmnModeler from '../package/index';
+import bpmnModeler from '../package/index'
 export default {
   components: {
     bpmnModeler
   },
   data() {
     return {
-      modelId: "",
-      xml: "", // 后端查询到的xml
+      modelId: '',
+      xml: '',
       users: [],
       groups: [],
       categorys: [],
       isView: false
-    };
+    }
   },
   mounted() {
-    window.addEventListener("message", (event) => {
+    window.addEventListener('message', (event) => {
       if (!event.data.isSave) {
-        this.set(event.data);
+        this.set(event.data)
       }
     })
   },
   methods: {
     saveModeler(data) {
-      addModel(data);
+      addModel(data)
     },
     set(eventData) {
       if (eventData.xml) {
-        this.xml = eventData.xml;
+        this.xml = eventData.xml
       }
       if (eventData.users) {
-        this.users = eventData.users;
+        this.users = eventData.users
       }
       if (eventData.groups) {
-        this.groups = eventData.groups;
+        this.groups = eventData.groups
       }
       if (eventData.categorys) {
-        this.categorys = eventData.categorys;
+        this.categorys = eventData.categorys
       }
       if (eventData.isView) {
-        this.isView = eventData.isView;
+        this.isView = eventData.isView
       }
     }
   }

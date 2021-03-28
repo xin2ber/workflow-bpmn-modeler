@@ -5,20 +5,14 @@
   "main": "dist/workflow-bpmn-modeler.umd.min.js",
   "scripts": {
     "dev": "vue-cli-service serve --open",
-    "demo": "cross-env NODE_ENV=demo vue-cli-service build",
-    "lib": "cross-env NODE_ENV=lib vue-cli-service build",
-    "cdn": "cross-env NODE_ENV=cdn vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build": "cross-env NODE_ENV=build vue-cli-service build --target lib --inline-vue --entry package/index.js",
-    "prepublish": "yarn build",
-    "postpublish": "yarn lib && yarn cdn && yarn demo"
+    "build": "cross-env NODE_ENV=build vue-cli-service build"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GoldSubmarine/workflow-bpmn-modeler.git"
+    "url": "git+https://github.com/xin2ber/workflow-bpmn-modeler.git"
   },
   "keywords": [
     "vue",
@@ -27,8 +21,8 @@
     "模型设计器"
   ],
   "author": {
-    "name": "charles",
-    "email": "997462392@qq.com"
+    "name": "lx",
+    "email": "42444880@qq.com"
   },
   "license": "MIT",
   "bugs": {

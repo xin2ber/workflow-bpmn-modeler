@@ -6,28 +6,10 @@ const NODE_ENV = process.env.NODE_ENV
 let publicPath = '/'
 let outputDir = 'dist'
 let appFileName = 'Lib'
-if (NODE_ENV === 'demo') {
+if (NODE_ENV === 'build') {
   publicPath = './'
   outputDir = 'D:/workspace/xte/xte-demo/xte-fastdev-flowable/src/main/resources/static/flow/model'
-  appFileName = 'Demo'
-}
-if (NODE_ENV === 'cdn') {
-  const cdnVersionList = fs.readdirSync('./docs/cdn')
-  if (cdnVersionList.includes(version)) {
-    throw new Error(`cdn 版本 ${version} 已存在`)
-  }
-  publicPath = `https://cdn.jsdelivr.net/gh/goldsubmarine/workflow-bpmn-modeler@${version}/docs/cdn/${version}/`
-  outputDir = `docs/cdn/${version}`
-  appFileName = 'Lib'
-}
-if (NODE_ENV === 'lib') {
-  const libVersionList = fs.readdirSync('./docs/lib')
-  if (libVersionList.includes(version)) {
-    throw new Error(`lib 版本 ${version} 已存在`)
-  }
-  publicPath = './'
-  outputDir = `docs/lib/${version}`
-  appFileName = 'Lib'
+  appFileName = 'App'
 }
 
 const mainFileStr = `
@@ -72,7 +54,7 @@ module.exports = {
       .set('views', resolve('src/views'))
 
     config
-      .when(NODE_ENV !== 'development' && NODE_ENV !== 'build',
+      .when(NODE_ENV !== 'development' && NODE_ENV !== 'dev',
         config => {
           config
             .optimization.splitChunks({
