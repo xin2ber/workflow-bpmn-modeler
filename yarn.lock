@@ -1618,6 +1618,12 @@ aws4@^1.8.0:
   version "1.10.1"
   resolved "https://registry.npm.taobao.org/aws4/download/aws4-1.10.1.tgz?cache=0&sync_timestamp=1597237002301&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faws4%2Fdownload%2Faws4-1.10.1.tgz#e1e82e4f3e999e2cfd61b161280d16a111f86428"
 
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  dependencies:
+    follow-redirects "^1.10.0"
+
 babel-eslint@^10.1.0:
   version "10.1.0"
   resolved "https://registry.npm.taobao.org/babel-eslint/download/babel-eslint-10.1.0.tgz#6968e568a910b78fb3779cdd8b6ac2f479943232"
@@ -1774,13 +1780,13 @@ bpmn-js@^7.2.1:
     object-refs "^0.3.0"
     tiny-svg "^2.2.1"
 
-bpmn-js@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/bpmn-js/-/bpmn-js-8.1.0.tgz#450fae357cce9e4b48f70d2a5a3aab312fef28d9"
+bpmn-js@^8.2.2:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/bpmn-js/-/bpmn-js-8.2.2.tgz#6bb7a8ee0d9766bff9becdc5e7e157f60de5da8f"
   dependencies:
     bpmn-moddle "^7.0.4"
     css.escape "^1.5.1"
-    diagram-js "^7.0.0"
+    diagram-js "^7.2.3"
     diagram-js-direct-editing "^1.6.2"
     ids "^1.0.0"
     inherits "^2.0.4"
@@ -2859,9 +2865,9 @@ diagram-js@^6.7.0:
     path-intersection "^2.2.0"
     tiny-svg "^2.2.1"
 
-diagram-js@^7.0.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/diagram-js/-/diagram-js-7.1.0.tgz#ab9008ba7bb6f12c344708029d39883828f4e5f1"
+diagram-js@^7.2.3:
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/diagram-js/-/diagram-js-7.2.3.tgz#6be81bc4e3e42a99eab8b233de886ea2a14af526"
   dependencies:
     css.escape "^1.5.1"
     didi "^5.2.1"
@@ -2870,7 +2876,7 @@ diagram-js@^7.0.0:
     min-dash "^3.5.2"
     min-dom "^3.1.3"
     object-refs "^0.3.0"
-    path-intersection "^2.2.0"
+    path-intersection "^2.2.1"
     tiny-svg "^2.2.2"
 
 didi@^4.0.0:
@@ -3020,6 +3026,17 @@ electron-to-chromium@^1.3.564:
 element-ui@^2.12.0, element-ui@^2.13.2:
   version "2.13.2"
   resolved "https://registry.npm.taobao.org/element-ui/download/element-ui-2.13.2.tgz?cache=0&sync_timestamp=1589795164194&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felement-ui%2Fdownload%2Felement-ui-2.13.2.tgz#582bf47aaaaaafe23ea1958fae217a687ad06447"
+  dependencies:
+    async-validator "~1.8.1"
+    babel-helper-vue-jsx-merge-props "^2.0.0"
+    deepmerge "^1.2.0"
+    normalize-wheel "^1.0.1"
+    resize-observer-polyfill "^1.5.0"
+    throttle-debounce "^1.0.1"
+
+element-ui@^2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.15.1.tgz#ada00aa6e32c02774a2e77563dd84668f813cdff"
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"
@@ -3607,6 +3624,10 @@ flush-write-stream@^1.0.0:
 follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.13.0.tgz?cache=0&sync_timestamp=1597059692702&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+
+follow-redirects@^1.10.0:
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -5505,6 +5526,10 @@ path-exists@^4.0.0:
 path-intersection@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npm.taobao.org/path-intersection/download/path-intersection-2.2.0.tgz#84ce9da5a71e855536678efc7150a71468b155dc"
+
+path-intersection@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/path-intersection/-/path-intersection-2.2.1.tgz#8476b75fefb7ac402f810d304e0eb0c080c11fe7"
 
 path-is-absolute@^1.0.0:
   version "1.0.1"

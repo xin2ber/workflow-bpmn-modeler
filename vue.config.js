@@ -12,8 +12,7 @@ if (NODE_ENV === 'build') {
   appFileName = 'App'
 }
 
-const mainFileStr = `
-import Vue from 'vue'
+const mainFileStr = `import Vue from 'vue'
 import App from './${appFileName}.vue'
 import ElementUI from 'element-ui'
 import VueClipboard from 'vue-clipboard2'
