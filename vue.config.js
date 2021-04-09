@@ -7,8 +7,8 @@ let publicPath = '/'
 let outputDir = 'dist'
 let appFileName = 'Lib'
 if (NODE_ENV === 'build') {
-  publicPath = './'
-  outputDir = 'D:/workspace/xte/xte-demo/xte-fastdev-flowable/src/main/resources/static/flow/model'
+  publicPath = '/scripts/flow/model/'
+  outputDir = 'D:/workspace/xte/xte-demo/xte-fastdev-flowable/src/main/resources/static/scripts/flow/model'
   appFileName = 'App'
 }
 
