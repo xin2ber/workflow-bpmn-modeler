@@ -6,6 +6,7 @@
       :processDefinitionId="processDefinitionId"
       :is-view="isView"
       @save="saveModeler"
+      @dynamic="dynamic"
     />
   </div>
 </template>
@@ -33,6 +34,9 @@ export default {
   methods: {
     saveModeler(data) {
       addModel(data)
+    },
+    dynamic(data){
+      dynamic(data)
     },
     set(eventData) {
       if (eventData.modelId) {
