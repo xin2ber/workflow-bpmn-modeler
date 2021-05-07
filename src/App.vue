@@ -2,10 +2,8 @@
   <div class="workflow-bpmn-modeler">
     <bpmn-modeler
       ref="refNode"
-      :xml="xml"
-      :users="users"
-      :groups="groups"
-      :categorys="categorys"
+      :modelId="modelId"
+      :processDefinitionId="processDefinitionId"
       :is-view="isView"
       @save="saveModeler"
     />
@@ -21,10 +19,7 @@ export default {
   data() {
     return {
       modelId: '',
-      xml: '',
-      users: [],
-      groups: [],
-      categorys: [],
+      processDefinitionId: '',
       isView: false
     }
   },
@@ -40,17 +35,11 @@ export default {
       addModel(data)
     },
     set(eventData) {
-      if (eventData.xml) {
-        this.xml = eventData.xml
+      if (eventData.modelId) {
+        this.modelId = eventData.modelId
       }
-      if (eventData.users) {
-        this.users = eventData.users
-      }
-      if (eventData.groups) {
-        this.groups = eventData.groups
-      }
-      if (eventData.categorys) {
-        this.categorys = eventData.categorys
+      if (eventData.processDefinitionId) {
+        this.processDefinitionId = eventData.processDefinitionId
       }
       if (eventData.isView) {
         this.isView = eventData.isView

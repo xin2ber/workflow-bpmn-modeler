@@ -77,16 +77,6 @@ export default {
     inOutDialog
   },
   mixins: [mixinPanel],
-  props: {
-    users: {
-      type: Array,
-      required: true
-    },
-    groups: {
-      type: Array,
-      required: true
-    }
-  },
   data() {
     return {
       dialogName: '',

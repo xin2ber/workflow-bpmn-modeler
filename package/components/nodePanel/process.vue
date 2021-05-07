@@ -32,6 +32,7 @@ import mixinPanel from '../../common/mixinPanel'
 import mixinExecutionListener from '../../common/mixinExecutionListener'
 import signalDialog from './property/signal'
 import { commonParse } from '../../common/parseElement'
+import { getCategoryList } from '../../common/api'
 export default {
   components: {
     signalDialog
@@ -40,7 +41,8 @@ export default {
   data() {
     return {
       signalLength: 0,
-      formData: {}
+      formData: {},
+      categorys: []
     }
   },
   computed: {
@@ -124,6 +126,11 @@ export default {
   },
   created() {
     this.formData = commonParse(this.element)
+  },
+  mounted() {
+    getCategoryList().then(resp => {
+      this.categorys = resp
+    })
   },
   methods: {
     computedSignalLength() {

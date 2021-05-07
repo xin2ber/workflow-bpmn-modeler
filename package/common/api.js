@@ -1,5 +1,19 @@
 import request from './request'
 
+export function getXmlByModelId(modelId) {
+  return request({
+    url: '/flow/model/xml/' + modelId,
+    method: 'get'
+  })
+}
+
+export function getXmlByDefId(defId) {
+  return request({
+    url: '/flow/def/xml/' + defId,
+    method: 'get'
+  })
+}
+
 /**
  * 类别列表
  */
@@ -17,5 +31,15 @@ export function getCandidatesTypeList() {
   return request({
     url: '/flow/model/candidatesTypeList',
     method: 'get'
+  })
+}
+
+/**
+* 保存模型
+*/
+export function saveMode() {
+  return request({
+    url: '/flow/model/add',
+    method: 'post'
   })
 }

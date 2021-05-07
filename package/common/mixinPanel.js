@@ -28,10 +28,6 @@ export default {
     element: {
       type: Object,
       required: true
-    },
-    categorys: {
-      type: Array,
-      default: () => []
     }
   },
   watch: {

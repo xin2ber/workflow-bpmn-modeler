@@ -6,9 +6,6 @@
       v-if="element"
       :element="element"
       :modeler="modeler"
-      :users="users"
-      :groups="groups"
-      :categorys="categorys"
     />
   </div>
 </template>
@@ -25,18 +22,6 @@ export default {
   name: 'PropertyPanel',
   components: { processPanel, taskPanel, startEndPanel, sequenceFlowPanel, gatewayPanel },
   props: {
-    users: {
-      type: Array,
-      required: true
-    },
-    groups: {
-      type: Array,
-      required: true
-    },
-    categorys: {
-      type: Array,
-      required: true
-    },
     modeler: {
       type: Object,
       required: true

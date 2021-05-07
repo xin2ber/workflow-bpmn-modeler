@@ -56,7 +56,7 @@
           </el-dialog>
         </el-main>
         <el-aside style="width: 400px; min-height: 650px; background-color: #f0f2f5">
-          <panel v-if="modeler" :modeler="modeler" :users="users" :groups="groups" :categorys="categorys" />
+          <panel v-if="modeler" :modeler="modeler" />
         </el-aside>
       </el-container>
     </el-container>
@@ -74,6 +74,7 @@ import getInitStr from './flowable/init'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
 import VueAceEditor from 'vue2-ace-editor'
+import { getXmlByModelId, getXmlByDefId } from './common/api'
 export default {
   name: 'WorkflowBpmnModeler',
   components: {
@@ -81,21 +82,13 @@ export default {
     VueAceEditor
   },
   props: {
-    xml: {
+    modelId: {
       type: String,
       default: ''
     },
-    users: {
-      type: Array,
-      default: () => []
-    },
-    groups: {
-      type: Array,
-      default: () => []
-    },
-    categorys: {
-      type: Array,
-      default: () => []
+    processDefinitionId: {
+      type: String,
+      default: ''
     },
     isView: {
       type: Boolean,
@@ -104,6 +97,7 @@ export default {
   },
   data() {
     return {
+      xml: null,
       modeler: null,
       taskList: [],
       zoom: 1,
@@ -115,6 +109,22 @@ export default {
     xml: function(val) {
       if (val) {
         this.createNewDiagram(val)
+      } else {
+        this.newDiagram()
+      }
+    },
+    modelId: function(val) {
+      if (val) {
+        getXmlByModelId(this.modelId).then(resp => {
+          this.xml = resp
+        })
+      }
+    },
+    processDefinitionId: function(val) {
+      if (val) {
+        getXmlByDefId(this.processDefinitionId).then(resp => {
+          this.xml = resp
+        })
       }
     }
   },
@@ -132,10 +142,8 @@ export default {
       }
     })
     // 新增流程定义
-    if (!this.xml) {
+    if (!this.modelId && !this.processDefinitionId) {
       this.newDiagram()
-    } else {
-      this.createNewDiagram(this.xml)
     }
   },
   methods: {

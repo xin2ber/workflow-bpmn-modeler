@@ -5,7 +5,6 @@
       :xml="xml"
       :users="users"
       :groups="groups"
-      :categorys="categorys"
       :is-view="isView"
     />
   </div>
@@ -22,7 +21,6 @@ export default {
       xml: '', // 后端查询到的xml
       users: [],
       groups: [],
-      categorys: [],
       isView: false
     }
   },
@@ -36,7 +34,6 @@ export default {
       this.xml = eventData.xml
       this.users = eventData.users ?? []
       this.groups = eventData.groups ?? []
-      this.categorys = eventData.categorys ?? []
       this.isView = eventData.isView ?? false
     }
   }
