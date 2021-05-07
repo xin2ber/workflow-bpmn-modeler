@@ -32,7 +32,6 @@
             <el-button size="mini" icon="el-icon-tickets" @click="previewXML()">预览</el-button>
             <el-button size="mini" icon="el-icon-download" @click="saveXML(true)">下载xml</el-button>
             <el-button size="mini" icon="el-icon-picture" @click="saveImg('svg', true)">下载svg</el-button>
-            <el-button size="mini" type="primary" plain @click="dynamic">动态修改</el-button>
             <el-button size="mini" type="primary" @click="save">保存模型</el-button>
           </div>
         </div>
@@ -336,10 +335,6 @@ export default {
     async save() {
       const result = await this.getResult()
       this.$emit('save', result)
-    },
-    async dynamic() {
-      const result = await this.getResult()
-      this.$emit('dynamic', result)
     },
     openBpmn(file) {
       const reader = new FileReader()
