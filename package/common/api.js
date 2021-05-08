@@ -14,6 +14,14 @@ export function getXmlByDefId(defId) {
   })
 }
 
+export function submitModel(data) {
+  return request({
+    url: '/flow/model/add',
+    params: data,
+    method: 'post'
+  })
+}
+
 /**
  * 类别列表
  */

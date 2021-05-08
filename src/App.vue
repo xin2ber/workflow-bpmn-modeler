@@ -6,7 +6,7 @@
       :processDefinitionId="processDefinitionId"
       :is-view="isView"
       @save="saveModeler"
-      @dynamic="dynamic"
+      @submitSuccess="submitSuccess"
     />
   </div>
 </template>
@@ -35,8 +35,8 @@ export default {
     saveModeler(data) {
       addModel(data)
     },
-    dynamic(data){
-      dynamic(data)
+    submitSuccess() {
+      returnModelTable()
     },
     set(eventData) {
       if (eventData.modelId) {

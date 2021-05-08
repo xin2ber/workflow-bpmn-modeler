@@ -17,6 +17,25 @@ axios.defaults.transformRequest = function(data) {
 // 路由请求拦截
 axios.interceptors.request.use(
   config => {
+    if (config.method === 'post') {
+      const csrfElements = document.getElementsByName('_csrf')
+      if(csrfElements && csrfElements.length > 0){
+        console.log(csrfElements[0])
+      }
+
+      const csrfHeaderElement = document.getElementsByName('_csrf_header')
+      console.log(csrfHeaderElement)
+
+      if (csrfElement && csrfHeaderElement) {
+        const token = csrfElement.attr('content')
+        const header = csrfHeaderElement.attr('content')
+        console.log(token)
+        console.log(header)
+        if (token) {
+          config.headers[header] = token
+        }
+      }
+    }
     config.headers['Content-Type'] = 'application/json;charset=UTF-8'
     return config
   },
@@ -38,4 +57,5 @@ axios.interceptors.response.use(
     return Promise.reject(error.response) // 返回接口返回的错误信息
   }
 )
+
 export default axios

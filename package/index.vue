@@ -32,7 +32,7 @@
             <el-button size="mini" icon="el-icon-tickets" @click="previewXML()">预览</el-button>
             <el-button size="mini" icon="el-icon-download" @click="saveXML(true)">下载xml</el-button>
             <el-button size="mini" icon="el-icon-picture" @click="saveImg('svg', true)">下载svg</el-button>
-            <el-button size="mini" type="primary" @click="save">保存模型</el-button>
+            <el-button size="mini" icon="el-icon-check" type="primary" @click="openSubmitDialog">提交</el-button>
           </div>
         </div>
       </el-header>
@@ -54,6 +54,11 @@
               <el-button icon="el-icon-close" @click="xmlVisible = false">关闭</el-button>
             </span>
           </el-dialog>
+          <submitDialog
+            :submitDialogFlag.sync="submitDialogFlag"
+            :deployed="Boolean(processDefinitionId)"
+            @submit="submit"
+          />
         </el-main>
         <el-aside style="width: 400px; min-height: 650px; background-color: #f0f2f5">
           <panel v-if="modeler" :modeler="modeler" />
@@ -74,12 +79,14 @@ import getInitStr from './flowable/init'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
 import VueAceEditor from 'vue2-ace-editor'
-import { getXmlByModelId, getXmlByDefId } from './common/api'
+import submitDialog from './submitDialog'
+import { getXmlByModelId, getXmlByDefId, submitModel } from './common/api'
 export default {
   name: 'WorkflowBpmnModeler',
   components: {
     panel,
-    VueAceEditor
+    VueAceEditor,
+    submitDialog
   },
   props: {
     modelId: {
@@ -102,7 +109,8 @@ export default {
       taskList: [],
       zoom: 1,
       xmlVisible: false,
-      xmlEditor: ''
+      xmlEditor: '',
+      submitDialogFlag: false
     }
   },
   watch: {
@@ -147,6 +155,9 @@ export default {
     }
   },
   methods: {
+    openSubmitDialog() {
+      this.submitDialogFlag = true
+    },
     newDiagram() {
       this.createNewDiagram(getInitStr())
     },
@@ -335,6 +346,16 @@ export default {
     async save() {
       const result = await this.getResult()
       this.$emit('save', result)
+    },
+    async submit(options) {
+      options.xml = await this.saveXML()
+      options.id = this.modelId
+      options.processDefinitionId = this.processDefinitionId
+      console.log(options)
+      submitModel(options).then(() => {
+        this.submitDialogFlag = false
+        this.$emit('submitSuccess')
+      })
     },
     openBpmn(file) {
       const reader = new FileReader()
