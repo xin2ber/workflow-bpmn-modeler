@@ -19,19 +19,11 @@ axios.interceptors.request.use(
   config => {
     if (config.method === 'post') {
       const csrfElements = document.getElementsByName('_csrf')
-      if(csrfElements && csrfElements.length > 0){
-        console.log(csrfElements[0])
-      }
-
-      const csrfHeaderElement = document.getElementsByName('_csrf_header')
-      console.log(csrfHeaderElement)
-
-      if (csrfElement && csrfHeaderElement) {
-        const token = csrfElement.attr('content')
-        const header = csrfHeaderElement.attr('content')
-        console.log(token)
-        console.log(header)
-        if (token) {
+      const csrfHeaderElements = document.getElementsByName('_csrf_header')
+      if (csrfElements && csrfElements.length > 0 && csrfHeaderElements && csrfHeaderElements.length > 0) {
+        const token = csrfElements[0].getAttribute('content')
+        const header = csrfHeaderElements[0].getAttribute('content')
+        if (token && header) {
           config.headers[header] = token
         }
       }
@@ -47,8 +39,9 @@ axios.interceptors.request.use(
 // 路由响应拦截
 axios.interceptors.response.use(
   response => {
-    if (response.code === 1) {
-      return Message.error(response.msg)
+    if (response.data.code === -1) {
+      Message.error(response.data.msg)
+      return false
     } else {
       return response.data
     }

@@ -5,7 +5,6 @@
       :modelId="modelId"
       :processDefinitionId="processDefinitionId"
       :is-view="isView"
-      @save="saveModeler"
       @submitSuccess="submitSuccess"
     />
   </div>
@@ -25,16 +24,10 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('message', (event) => {
-      if (!event.data.isSave) {
-        this.set(event.data)
-      }
-    })
+    this.modelId = document.getElementById('modelId').value ?? ''
+    this.processDefinitionId = document.getElementById('processDefinitionId').value ?? ''
   },
   methods: {
-    saveModeler(data) {
-      addModel(data)
-    },
     submitSuccess() {
       returnModelTable()
     },

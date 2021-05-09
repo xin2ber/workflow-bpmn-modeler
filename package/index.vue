@@ -347,14 +347,15 @@ export default {
       const result = await this.getResult()
       this.$emit('save', result)
     },
-    async submit(options) {
-      options.xml = await this.saveXML()
-      options.id = this.modelId
-      options.processDefinitionId = this.processDefinitionId
-      console.log(options)
-      submitModel(options).then(() => {
-        this.submitDialogFlag = false
-        this.$emit('submitSuccess')
+    async submit(data) {
+      data.xml = await this.saveXML()
+      data.id = this.modelId
+      data.processDefinitionId = this.processDefinitionId
+      submitModel(data).then((rsp) => {
+        if (rsp !== false) {
+          this.submitDialogFlag = false
+          this.$emit('submitSuccess')
+        }
       })
     },
     openBpmn(file) {

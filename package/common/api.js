@@ -16,8 +16,8 @@ export function getXmlByDefId(defId) {
 
 export function submitModel(data) {
   return request({
-    url: '/flow/model/add',
-    params: data,
+    url: '/flow/model/submitModel',
+    data: data,
     method: 'post'
   })
 }
